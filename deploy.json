@@ -1,0 +1,37 @@
+[
+  {
+    "name": "postgres",
+    "slug": "vmware-postgres-for-tas",
+    "version": "10.1.1",
+    "ops_files": ["postgres-ops.yml"],
+    "certs": "false",
+    "terraform": "false"
+  },
+  {
+    "name": "genai",
+    "slug": "genai-for-tas",
+    "version": "10.4.0",
+    "ops_files": ["genai-ops.yml"],
+    "certs": "false",
+    "terraform": "false"
+  },
+  {
+    "name": "hub",
+    "slug": "hub",
+    "version": "10.4.0",
+    "ops_files": ["hub-ops.yml"],
+    "certs": "true",
+    "cert_domains": ["hub.${ENV_NAME}.cf-app.com"],
+    "terraform": "true",
+    "nat_vm_tags": ["hub"]
+  },
+  {
+    "name": "hub-collector",
+    "slug": "tas-hub-collector",
+    "version": "10.4.0",
+    "ops_files": ["collector-ops.yml"],
+    "certs": "false",
+    "terraform": "false",
+    "nat_vm_tags": ["hub-collector"]
+  }
+]

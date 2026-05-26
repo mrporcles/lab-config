@@ -1,0 +1,63 @@
+- type: replace
+  path: /network-properties/singleton_availability_zone
+  value:
+    name: ((single_az))
+
+- type: replace
+  path: /network-properties/other_availability_zones
+  value: ((az_name_list))
+
+- type: replace
+  path: /network-properties/network
+  value:
+    name: ((environment_tag))-pas-subnet
+
+- type: replace
+  path: /product-properties/.properties.dns_zone?
+  value:
+    value: hub.((environment_tag)).cf-app.com
+
+- type: replace
+  path: /resource-config/control/elb_names?
+  value:
+    - tcp:((environment_tag))-hub
+
+- type: replace
+  path: /resource-config/blobstore/internet_connected?
+  value: false
+
+- type: replace
+  path: /resource-config/clickhouse-metrics/internet_connected?
+  value: false
+
+- type: replace
+  path: /resource-config/control/internet_connected?
+  value: false
+
+- type: replace
+  path: /resource-config/kafka/internet_connected?
+  value: false
+
+- type: replace
+  path: /resource-config/postgres/internet_connected?
+  value: false
+
+- type: replace
+  path: /resource-config/prometheus/internet_connected?
+  value: false
+
+- type: replace
+  path: /resource-config/registry/internet_connected?
+  value: false
+
+- type: replace
+  path: /resource-config/system/internet_connected?
+  value: false
+
+- type: replace
+  path: /product-properties/.properties.ingress_tls?
+  value:
+    value:
+      cert_pem: ((ssl_cert))
+      private_key_pem: ((ssl_key))
+

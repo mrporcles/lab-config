@@ -1,0 +1,4 @@
+- type: replace
+  path: /resource-config/director/instance_type
+  value:
+    id: e2-standard-4.disk

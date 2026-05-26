@@ -23,7 +23,7 @@
     "certs": "true",
     "cert_domains": ["hub.${ENV_NAME}.cf-app.com"],
     "terraform": "true",
-    "nat_vm_tags": ["hub"]
+    "nat_vm_tags": ["system", "postgres", "kafka", "clickhouse-metrics", "prometheus", "registry"]
   },
   {
     "name": "hub-collector",

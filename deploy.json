@@ -26,7 +26,7 @@
     "nat_vm_tags": ["system", "postgres", "kafka", "clickhouse-metrics", "prometheus", "registry"]
   },
   {
-    "name": "hub-collector",
+    "name": "hub-tas-collector",
     "slug": "tas-hub-collector",
     "version": "10.4.0",
     "ops_files": ["collector-ops.yml"],

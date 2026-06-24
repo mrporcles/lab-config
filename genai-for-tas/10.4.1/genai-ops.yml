@@ -62,46 +62,46 @@
     value: on-demand-postgres-db
 
 - type: replace
-  path: /product-properties/.errands.ollama_models/value/-
+  path: /product-properties/.errands.ollama_models?
   value:
-    model_name: lfm2:24b-q4_K_M
-    name: liquid
-    model_capabilities:
-    - chat
-    - tools
-    vm_type: highcpu
-    azs: ((az_list))
-    ollama_keep_alive: "-1"
-    ollama_num_parallel: 0
-    ollama_context_length: 32768
-    ollama_kv_cache_type: q4_0
-    ollama_flash_attention: true
-    ollama_load_timeout: 5m
-    azs: ((az_list))
-    model_modelfile: PARAMETER temperature 0.3
-  value:
-    model_name: nomic-embed-text
-    name: nomic-embed-text
-    model_capabilities:
-    - embedding
-    vm_type: cpu
-    azs: ((az_list))
-    ollama_keep_alive: "-1"
-    ollama_num_parallel: 0
-    ollama_context_length: 8192
-    ollama_kv_cache_type: f16
-    ollama_flash_attention: true
-    ollama_load_timeout: 5m
+    value:
+      - model_name: lfm2:24b-q4_K_M
+        name: liquid
+        model_capabilities:
+          - chat
+          - tools
+        vm_type: highcpu
+        azs: ((az_list))
+        ollama_keep_alive: "-1"
+        ollama_num_parallel: 0
+        ollama_context_length: 32768
+        ollama_kv_cache_type: q4_0
+        ollama_flash_attention: true
+        ollama_load_timeout: 5m
+        azs: ((az_list))
+        model_modelfile: PARAMETER temperature 0.3
+      - model_name: nomic-embed-text
+        name: nomic-embed-text
+        model_capabilities:
+          - embedding
+        vm_type: cpu
+        azs: ((az_list))
+        ollama_keep_alive: "-1"
+        ollama_num_parallel: 0
+        ollama_context_length: 8192
+        ollama_kv_cache_type: f16
+        ollama_flash_attention: true
+        ollama_load_timeout: 5m
 
 - type: replace
-  path: /product-properties/.controller.plans/value/-
+  path: /product-properties/.controller.plans?
   value:
-    name: chat-and-tools-model
-    binding_credential_format: multi-model
-    model_handles: liquid
-    description: A model with chat and tool capabilities
-  value:
-    name: embedding-model
-    model_handles: nomic-embed-text
-    binding_credential_format: multi-model
-    description: A high-performing open embedding model
+    value:
+      - name: chat-and-tools-model
+        binding_credential_format: multi-model
+        model_handles: liquid
+        description: A model with chat and tool capabilities
+      - name: embedding-model
+        model_handles: nomic-embed-text
+        binding_credential_format: multi-model
+        description: A high-performing open embedding model

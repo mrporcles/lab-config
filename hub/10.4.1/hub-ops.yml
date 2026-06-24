@@ -20,7 +20,7 @@
 - type: replace
   path: /resource-config/control/elb_names?
   value:
-    - tcp:((environment_tag))-hub
+    - http:((environment_tag))-hub
 
 - type: replace
   path: /resource-config/blobstore/internet_connected?

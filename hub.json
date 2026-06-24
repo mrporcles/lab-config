@@ -1,0 +1,13 @@
+[
+    {
+      "name": "hub",
+      "slug": "hub",
+      "version": "10.4.2",
+      "ops_files": ["hub-ops.yml"],
+      "certs": "true",
+      "cert_domains": ["hub.${ENV_NAME}.cf-app.com"],
+      "terraform": "false",
+      "nat_vm_tags": ["system", "postgres", "kafka", "clickhouse-metrics", "prometheus", "registry"]
+    }
+]
+  

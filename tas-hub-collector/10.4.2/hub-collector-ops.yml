@@ -51,11 +51,6 @@
       secret: ((oauth_client_secret))
 
 - type: replace
-  path: /product-properties/.properties.frpc_remote_port?
-  value:
-    value: ((frpc_remote_port))
-
-- type: replace
   path: /product-properties/.properties.foundation_name?
   value:
     value: ((collector_name))

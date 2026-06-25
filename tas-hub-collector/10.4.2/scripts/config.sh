@@ -103,18 +103,14 @@ export HUB_TARGET=${HUB_HOSTNAME}
 export HUB_USERNAME=${HUB_ADMIN_USER}
 export HUB_PASSWORD=$(om credentials --product-name hub --credential-reference .properties.admin_password --credential-field secret)
 
-echo "HUB_TARGET: ${HUB_TARGET}"
-echo "HUB_USERNAME: ${HUB_USERNAME}"
-echo "HUB_PASSWORD: ${HUB_PASSWORD}"
-
 # Add the Tanzu Hub license
-th -k license add --key "${HUB_LICENSE_KEY}"
+th -k license add --key ${HUB_LICENSE_KEY}
 
 # Create a TPST client in the OM UAA to be used for Platform Services configuration
 uaac target ${OM_TARGET}/uaa --skip-ssl-validation
-uaac token owner get opsman ${OM_USERNAME} -s '' -p "${OM_PASSWORD}"
-uaac client delete ${TPST_CLIENT_ID} || true
-uaac client add ${TPST_CLIENT_ID} --secret ${TPST_CLIENT_SECRET} \
+uaac get-password-token opsman -s '' -u ${OM_USERNAME} -p "${OM_PASSWORD}"
+uaac delete-client ${TPST_CLIENT_ID} || true
+uaac create-client ${TPST_CLIENT_ID} -s ${TPST_CLIENT_SECRET} \
       --authorized_grant_types client_credentials,refresh_token \
       --authorities 'opsman.admin opsman.full_control opsman.restricted_control opsman.full_view opsman.restricted_view scim.read'
 
@@ -145,7 +141,7 @@ om staged-config -p hub-tas-collector > hub-tas-collector-original.yml
 # Configure the Platform Services tile
 om configure-product \
     --config hub-tas-collector-original.yml \
-    --ops-file hub-collector-ops.yml \
+    --ops-file $CONFIG_DIR/${PRODUCT_SLUG}/${PRODUCT_VERSION}/hub-collector-ops.yml \
     --var az_name_list="${az_name_list}" \
     --var single_az="${single_az}" \
     --var environment_tag="${environment_tag}" \

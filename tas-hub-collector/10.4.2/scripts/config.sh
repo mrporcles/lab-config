@@ -7,7 +7,7 @@ export TPST_CLIENT_ID="tpst-client"
 export TPST_CLIENT_SECRET=$(base64 < /dev/urandom | tr -Cd 'a-zA-Z0-9' | tr -d 'AEIOUYaeiouy1340' | head -c 16)
 
 # Source library files after ALL variables are defined
-source $CONFIG_DIR/${PRODUCT_SLUG}/${PRODUCT_VERSION}/scripts/lib/common.sh
+source $CONFIG_DIR/${PRODUCT_SLUG}/${PRODUCT_VERSION}./lib/common.sh
 
 om() { command om -k "$@"; }
 
@@ -111,6 +111,7 @@ uaac target ${OM_TARGET}/uaa --skip-ssl-validation
 uaac get-password-token opsman -s '' -u ${OM_USERNAME} -p "${OM_PASSWORD}"
 uaac delete-client ${TPST_CLIENT_ID} || true
 uaac create-client ${TPST_CLIENT_ID} -s ${TPST_CLIENT_SECRET} \
+      --scope "scim.read" \
       --authorized_grant_types client_credentials,refresh_token \
       --authorities 'opsman.admin opsman.full_control opsman.restricted_control opsman.full_view opsman.restricted_view scim.read'
 

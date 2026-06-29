@@ -7,7 +7,7 @@ export TPST_CLIENT_ID="tpst-client"
 export TPST_CLIENT_SECRET=$(base64 < /dev/urandom | tr -Cd 'a-zA-Z0-9' | tr -d 'AEIOUYaeiouy1340' | head -c 16)
 
 # Source library files after ALL variables are defined
-source $CONFIG_DIR/${PRODUCT_SLUG}/${PRODUCT_VERSION}./lib/common.sh
+source $CONFIG_DIR/${PRODUCT_SLUG}/${PRODUCT_VERSION}/scipts/lib/common.sh
 
 om() { command om -k "$@"; }
 

@@ -2,6 +2,7 @@
 
 export HUB_ADMIN_USER="tanzu_platform_admin"
 export HUB_HOSTNAME="hub.${ENV_NAME}.cf-app.com"
+export EARUAA_TARGET="https://login.sys.${ENV_NAME}.cf-app.com"
 
 export TPST_CLIENT_ID="tpst-client"
 export TPST_CLIENT_SECRET=$(base64 < /dev/urandom | tr -Cd 'a-zA-Z0-9' | tr -d 'AEIOUYaeiouy1340' | head -c 16)
@@ -103,17 +104,28 @@ export HUB_TARGET=${HUB_HOSTNAME}
 export HUB_USERNAME=${HUB_ADMIN_USER}
 export HUB_PASSWORD=$(om credentials --product-name hub --credential-reference .properties.admin_password --credential-field secret)
 
+export 
+
 # Add the Tanzu Hub license
 th -k license add --key ${HUB_LICENSE_KEY}
 
 # Create a TPST client in the OM UAA to be used for Platform Services configuration
 uaac target ${OM_TARGET}/uaa --skip-ssl-validation
-uaac get-password-token opsman -s '' -u ${OM_USERNAME} -p "${OM_PASSWORD}"
-uaac delete-client ${TPST_CLIENT_ID} || true
-uaac create-client ${TPST_CLIENT_ID} -s ${TPST_CLIENT_SECRET} \
-      --scope "scim.read" \
-      --authorized_grant_types client_credentials,refresh_token \
-      --authorities 'opsman.admin opsman.full_control opsman.restricted_control opsman.full_view opsman.restricted_view scim.read'
+uaac token owner get opsman ${OM_USERNAME} -s '' -p "${OM_PASSWORD}"
+uaac client delete ${TPST_CLIENT_ID} || true
+uaac client add ${TPST_CLIENT_ID} --secret "${TPST_CLIENT_SECRET}" \
+  --authorized_grant_types client_credentials,refresh_token \
+  --authorities 'opsman.admin opsman.full_control opsman.restricted_control opsman.full_view opsman.restricted_view scim.read'
+
+# Need to create a tanzu_platform_admin user to match what is in Hub and add permissions
+export EARADMIN_PASSWORD=$(om credentials --product-name cf --credential-reference .uaa.admin_client_credentials --credential-field password)
+uaac target ${EARUAA_TARGET}
+uaac token client get admin -s "${EARADMIN_PASSWORD}"
+uaac user add tanzu_platform_admin --email "admin@test.org" --password "${HUB_PASSWORD}"
+uaac member add cloud_controller.admin tanzu_platform_admin
+uaac member add uaa.admin tanzu_platform_admin
+uaac member add scim.read tanzu_platform_admin
+uaac member add scim.write tanzu_platform_admin
 
 # Define collector name based on environment
 COLLECTOR_NAME="${ENV_NAME}-tas-collector"

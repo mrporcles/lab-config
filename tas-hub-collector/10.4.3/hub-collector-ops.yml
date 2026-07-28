@@ -1,0 +1,86 @@
+- type: replace
+  path: /network-properties/singleton_availability_zone
+  value:
+    name: ((single_az))
+
+- type: replace
+  path: /network-properties/other_availability_zones
+  value: ((az_name_list))
+
+- type: replace
+  path: /network-properties/network
+  value:
+    name: ((environment_tag))-pas-subnet
+
+- type: replace
+  path: /product-properties/.properties.opsman_uaa_admin_credentials?
+  value:
+    value:
+      identity: ((tpst_client_id))
+      password: ((tpst_client_secret))
+
+- type: replace
+  path: /product-properties/.properties.collector_id?
+  value: 
+    value: ((collector_id))
+
+- type: replace
+  path: /product-properties/.properties.csp_org_id?
+  value:
+    value: ((org_id))
+
+- type: replace
+  path: /product-properties/.properties.foundation_id?
+  value:
+    value: ((foundation_id))
+
+- type: replace
+  path: /product-properties/.properties.ingestion_url?
+  value:
+    value: ((ingestion_url))
+
+- type: replace
+  path: /product-properties/.properties.oauth_client_id?
+  value:
+    value: ((oauth_client_id))
+
+- type: replace
+  path: /product-properties/.properties.oauth_client_secret?
+  value:
+    value:
+      secret: ((oauth_client_secret))
+
+- type: replace
+  path: /product-properties/.properties.foundation_name?
+  value:
+    value: ((collector_name))
+
+- type: replace
+  path: /product-properties/.properties.environment_type?
+  value:
+    value: QA
+
+- type: replace
+  path: /resource-config/custom-metrics-store/internet_connected?
+  value: false
+
+- type: replace
+  path: /resource-config/ensemble_stitching/internet_connected?
+  value: false
+
+- type: replace
+  path: /resource-config/hub_tas_agent/internet_connected?
+  value: false
+
+- type: replace
+  path: /resource-config/logs-store/internet_connected?
+  value: false
+
+- type: replace
+  path: /resource-config/telegraf/internet_connected?
+  value: false
+
+- type: replace
+  path: /product-properties/.properties.hub_ca_certificate?
+  value:
+    value: ((cert_bundle))

@@ -1,0 +1,107 @@
+- type: replace
+  path: /product-properties/.errands.vm_extensions?
+  value:
+    value:
+      - public_ip
+
+- type: replace
+  path: /product-properties/.properties.database_source.service_broker.name?
+  value: 
+    value: postgres
+
+- type: replace
+  path: /product-properties/.properties.database_source.service_broker.plan_name?
+  value: 
+    value: on-demand-postgres-db
+
+- type: replace
+  path: /network-properties/network
+  value:
+    name: ((environment_tag))-pas-subnet
+
+- type: replace
+  path: /network-properties/other_availability_zones
+  value: ((az_name_list))
+
+- type: replace
+  path: /network-properties/service_network
+  value:
+    name: ((environment_tag))-services-subnet
+
+- type: replace
+  path: /network-properties/singleton_availability_zone
+  value:
+    name: ((single_az))
+
+- type: replace
+  path: /errand-config/release-tests/post-deploy-state
+  value: false
+
+- type: replace
+  path: /errand-config/install-agent-buildpack/post-deploy-state
+  value: true
+
+- type: replace
+  path: /product-properties/.errands.gcp_vm_types/value/-
+  value:
+    machine_type: c2d-highcpu-16
+    name: highcpu
+    root_disk_size: 50
+    accelerator: null
+    accelerator_count: null
+    install_nvidia_open_driver: false
+
+- type: replace
+  path: /product-properties/.properties.mcp_gateway_database.service_broker.offering?
+  value:
+    value: postgres
+
+- type: replace
+  path: /product-properties/.properties.mcp_gateway_database.service_broker.plan_name?
+  value:
+    value: on-demand-postgres-db
+
+- type: replace
+  path: /product-properties/.errands.ollama_models?
+  value:
+    value:
+      - model_name: lfm2:24b-q4_K_M
+        name: liquid
+        model_capabilities:
+          - chat
+          - tools
+        vm_type: highcpu
+        azs: ((az_list))
+        ollama_keep_alive: "-1"
+        ollama_num_parallel: 0
+        ollama_context_length: 32768
+        ollama_kv_cache_type: q4_0
+        ollama_flash_attention: true
+        ollama_load_timeout: 5m
+        azs: ((az_list))
+        model_modelfile: PARAMETER temperature 0.3
+      - model_name: nomic-embed-text
+        name: nomic-embed-text
+        model_capabilities:
+          - embedding
+        vm_type: cpu
+        azs: ((az_list))
+        ollama_keep_alive: "-1"
+        ollama_num_parallel: 0
+        ollama_context_length: 8192
+        ollama_kv_cache_type: f16
+        ollama_flash_attention: true
+        ollama_load_timeout: 5m
+
+- type: replace
+  path: /product-properties/.controller.plans?
+  value:
+    value:
+      - name: chat-and-tools-model
+        binding_credential_format: multi-model
+        model_handles: liquid
+        description: A model with chat and tool capabilities
+      - name: embedding-model
+        model_handles: nomic-embed-text
+        binding_credential_format: multi-model
+        description: A high-performing open embedding model

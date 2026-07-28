@@ -1,0 +1,32 @@
+- type: replace
+  path: /network-properties/network
+  value:
+    name: ((environment_tag))-pas-subnet
+
+- type: replace
+  path: /network-properties/service_network
+  value:
+    name: ((environment_tag))-services-subnet
+
+- type: replace
+  path: /network-properties/singleton_availability_zone
+  value:
+    name: ((single_az))
+
+- type: replace
+  path: /network-properties/other_availability_zones
+  value: ((az_name_list))
+
+- type: replace
+  path: /product-properties/.properties.plan_collection?
+  value:
+    value:
+      - name: on-demand-postgres-db
+        az_multi_select: ((az_list))
+        vm_type: e2-standard-4
+        disk_size: "51200"
+
+- type: replace
+  path: /product-properties/.properties.settings_shareable_instances?
+  value:
+    value: "Yes"

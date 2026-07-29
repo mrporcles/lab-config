@@ -2,7 +2,7 @@
   {
     "name": "postgres",
     "slug": "vmware-postgres-for-tas",
-    "version": "10.4.2",
+    "version": "10.1.1",
     "ops_files": ["postgres-ops.yml"],
     "certs": "false",
     "terraform": "false"

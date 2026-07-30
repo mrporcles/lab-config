@@ -27,6 +27,11 @@
         disk_size: "51200"
 
 - type: replace
+  path: /product-properties/.properties.global_az_multi_select?
+  value: 
+    value: ((az_list))
+    
+- type: replace
   path: /product-properties/.properties.settings_shareable_instances?
   value:
     value: "Yes"

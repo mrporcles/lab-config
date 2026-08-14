@@ -17,3 +17,4 @@
 - type: replace
   path: /resource-config/compute/instances
   value: 2
+

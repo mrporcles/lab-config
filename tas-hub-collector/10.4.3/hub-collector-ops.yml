@@ -84,3 +84,13 @@
   path: /product-properties/.properties.hub_ca_certificate?
   value:
     value: ((cert_bundle))
+
+- type: replace
+  path:  /product-properties/.properties.ear_platform_logs_forwarding.forward.log_type?
+  value:
+    value: ALL
+
+- type: replace
+  path: /product-properties/.properties.enable_mtls_application_logs?
+  value:
+    value: true

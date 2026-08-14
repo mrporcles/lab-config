@@ -1,0 +1,70 @@
+- type: replace
+  path: /product-properties/.properties.otel_collector_beta_features_enabled?
+  value:
+    value: true
+
+- type: replace
+  path: /product-properties/.properties.otel_collector_config?
+  value:
+    value: |
+      exporters:
+        otlp/app-collector-traces:
+          endpoint: telegraf.hub-collector.service.internal:4317
+          retry_on_failure:
+            enabled: true
+            max_interval: 90s
+            max_elapsed_time: 600s
+          balancer_name: round_robin
+          tls:
+            ca_pem: '{{ .cfhubcollector.ca }}'
+            cert_pem: '{{ .cfhubcollector.cert }}'
+            key_pem: '{{ .cfhubcollector.key }}'
+        syslog/cf-app-logs:
+          endpoint: logs-service.service.internal
+          port: 6514
+          network: tcp
+          protocol: rfc5424
+          timeout: 10s
+          tls:
+            ca_pem: '{{ .logstore.ca }}'
+            cert_pem: '{{ .logstore.cert }}'
+            key_pem: '{{ .logstore.key }}'
+          sending_queue:
+            enabled: true
+            queue_size: 100000
+
+      processors:
+        transform/cf-app-logs:
+          error_mode: ignore
+          log_statements:
+            - context: log
+              statements:
+                - set(attributes["appname"], attributes["app_name"]) where attributes["appname"] == nil
+                - set(attributes["structured_data"]["cf@47450"], attributes)
+                - set(attributes["message"], body) where attributes["message"] == nil
+
+      service:
+        pipelines:
+          traces:
+            exporters:
+              - otlp/app-collector-traces
+          logs:
+            processors:
+              - transform/cf-app-logs
+            exporters:
+              - syslog/cf-app-logs
+
+- type: replace
+  path: /product-properties/.properties.otel_collector_secrets?
+  value:
+    value:
+      - name: cfhubcollector
+        ca: ((opsman_root_ca))
+        cert:
+          cert_pem: ((otel_agent_cert))
+          private_key_pem: ((otel_agent_key))
+      - name: logstore
+        ca: ((opsman_root_ca))
+        cert:
+          cert_pem: ((log_store_cert))
+          private_key_pem: ((log_store_key))

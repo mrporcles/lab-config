@@ -169,6 +169,9 @@ om configure-product \
     --var collector_name="${COLLECTOR_NAME}" \
     --var cert_bundle="${cert_bundle}"
 
+# Apply changes
+retry om apply-changes
+
 # Parse the certs required for ERT log collection config
 opsman_root_ca=$(om certificate-authorities --format json | jq -r '.[0].cert_pem')
 otel_agent_cert=$(om credentials --product-name hub-tas-collector --credential-reference .properties.collector_mtls --credential-field cert_pem)

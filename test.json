@@ -1,0 +1,13 @@
+[
+  {
+    "name": "hub-tas-collector",
+    "slug": "tas-hub-collector",
+    "version": "10.4.3",
+    "ops_files": ["hub-collector-ops.yml"],
+    "certs": "false",
+    "terraform": "false",
+    "nat_vm_tags": ["ensemble-stitching", "logs-store", "telegraf", "hub-tas-agent"],
+    "skip_config": "true",
+    "post_deploy_scripts": ["config.sh"]
+  }
+]

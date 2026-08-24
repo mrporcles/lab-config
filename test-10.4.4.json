@@ -10,7 +10,7 @@
   {
     "name": "genai",
     "slug": "genai-for-tas",
-    "version": "10.4.3",
+    "version": "10.4.4",
     "ops_files": ["genai-ops.yml"],
     "certs": "false",
     "terraform": "false"
@@ -18,22 +18,11 @@
   {
     "name": "hub",
     "slug": "hub",
-    "version": "10.4.3",
+    "version": "10.4.4",
     "ops_files": ["hub-ops.yml"],
     "certs": "true",
     "cert_domains": ["hub.${ENV_NAME}.cf-app.com"],
     "terraform": "true",
     "nat_vm_tags": ["system", "postgres", "kafka", "clickhouse-metrics", "prometheus", "registry"]
-  },
-  {
-    "name": "hub-tas-collector",
-    "slug": "tas-hub-collector",
-    "version": "10.4.3",
-    "ops_files": ["hub-collector-ops.yml"],
-    "certs": "false",
-    "terraform": "false",
-    "nat_vm_tags": ["ensemble-stitching", "logs-store", "telegraf", "hub-tas-agent"],
-    "skip_config": "true",
-    "post_deploy_scripts": ["config.sh"]
   }
 ]

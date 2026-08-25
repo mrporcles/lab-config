@@ -181,7 +181,7 @@ log_store_key=$(om credentials --product-name hub-tas-collector --credential-ref
 om staged-config -p cf > cf-original.yml || true
 
 # Add logging config to lab ERT ops file
-cat cf-logging.yml >> $CONFIG_DIR/general/cf-ops.yml
+cat $CONFIG_DIR/${PRODUCT_SLUG}/${PRODUCT_VERSION}/scripts/cf-logging.yml >> $CONFIG_DIR/general/cf-ops.yml
 
 # Configure ERT with logging config
 om configure-product --config cf-original.yml --ops-file $CONFIG_DIR/general/cf-ops.yml \

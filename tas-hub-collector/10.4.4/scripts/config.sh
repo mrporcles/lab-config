@@ -168,7 +168,7 @@ om configure-product \
     --var cert_bundle="${cert_bundle}"
 
 # Apply changes
-retry om apply-changes
+retry om apply-changes -n hub-tas-collector
 
 # Parse the certs required for ERT log collection config
 opsman_root_ca=$(om certificate-authorities --format json | jq -r '.[0].cert_pem')
@@ -192,12 +192,6 @@ om configure-product --config cf-original.yml --ops-file $CONFIG_DIR/general/cf-
   --var log_store_key="${log_store_key}"
 
 # Apply changes
-retry om apply-changes
+retry om apply-changes -n cf -n hub-tas-collector
 
 echo "Script completed successfully!" >&2
-
-
-
-
-
-

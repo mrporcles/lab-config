@@ -29,7 +29,7 @@
     "name": "hub-tas-collector",
     "slug": "tas-hub-collector",
     "version": "10.4.2",
-    "ops_files": ["collector-ops.yml"],
+    "ops_files": ["hub-collector-ops.yml"],
     "certs": "false",
     "terraform": "false",
     "nat_vm_tags": ["ensemble-stitching", "logs-store", "telegraf", "hub-tas-agent"],

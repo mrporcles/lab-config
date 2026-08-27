@@ -107,17 +107,19 @@ resource "google_compute_target_tcp_proxy" "hub" {
 
 # Global forwarding rules — both ports share the same proxy and backend.
 resource "google_compute_global_forwarding_rule" "hub-https" {
-  name       = "${var.env_name}-hub-https"
-  target     = google_compute_target_tcp_proxy.hub.id
-  port_range = "443"
-  ip_address = google_compute_global_address.hub.address
+  name                  = "${var.env_name}-hub-https"
+  target                = google_compute_target_tcp_proxy.hub.id
+  port_range            = "443"
+  ip_address            = google_compute_global_address.hub.address
+  load_balancing_scheme = "EXTERNAL"
 }
 
 resource "google_compute_global_forwarding_rule" "hub-http" {
-  name       = "${var.env_name}-hub-http"
-  target     = google_compute_target_tcp_proxy.hub.id
-  port_range = "80"
-  ip_address = google_compute_global_address.hub.address
+  name                  = "${var.env_name}-hub-http"
+  target                = google_compute_target_tcp_proxy.hub.id
+  port_range            = "80"
+  ip_address            = google_compute_global_address.hub.address
+  load_balancing_scheme = "EXTERNAL"
 }
 
 resource "google_dns_record_set" "hub-dns" {

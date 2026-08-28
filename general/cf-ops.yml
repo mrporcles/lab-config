@@ -10,3 +10,6 @@
   path: /resource-config/compute/instances
   value: 2
 
+- type: replace
+  path: /errand-config/smoke_tests/post-deploy-state
+  value: false

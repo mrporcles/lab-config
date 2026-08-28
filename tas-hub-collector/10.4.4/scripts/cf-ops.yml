@@ -76,3 +76,8 @@
 - type: replace
   path: /errand-config/push-apps-manager/post-deploy-state
   value: true
+
+- type: replace
+  path: /errand-config/smoke_tests/post-deploy-state
+  value: true
+

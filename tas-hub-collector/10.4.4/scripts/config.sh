@@ -98,6 +98,8 @@ echo "Setting Hub admin user password to non expiring..."
 kubectl -n tanzusm exec postgresql-0 -c pg-container -- \
     psql -d uaa -c "update users set passwd_change_required = false where username = '${HUB_ADMIN_USER}'"
 
+# Make Tanzu Hub embeddable in a cross-site iframe (Educates workshops)
+HUB_FQDN="${HUB_HOSTNAME}" $CONFIG_DIR/${PRODUCT_SLUG}/${PRODUCT_VERSION}/scripts/lib/iframe-embed-overlays.sh
 
 # Set credentials required for the Tanzu Hub CLI
 export HUB_TARGET=${HUB_HOSTNAME}
@@ -181,7 +183,7 @@ log_store_key=$(om credentials --product-name hub-tas-collector --credential-ref
 om staged-config -p cf > cf-original.yml || true
 
 # Add logging config to lab ERT ops file
-cat $CONFIG_DIR/${PRODUCT_SLUG}/${PRODUCT_VERSION}/scripts/cf-logging.yml >> $CONFIG_DIR/general/cf-ops.yml
+cat $CONFIG_DIR/${PRODUCT_SLUG}/${PRODUCT_VERSION}/scripts/cf-ops.yml >> $CONFIG_DIR/general/cf-ops.yml
 
 # Configure ERT with logging config
 om configure-product --config cf-original.yml --ops-file $CONFIG_DIR/general/cf-ops.yml \

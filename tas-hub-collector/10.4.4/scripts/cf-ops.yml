@@ -68,3 +68,11 @@
         cert:
           cert_pem: ((log_store_cert))
           private_key_pem: ((log_store_key))
+
+- type: replace
+  path: /errand-config/push-usage-service/post-deploy-state
+  value: true
+
+- type: replace
+  path: /errand-config/push-apps-manager/post-deploy-state
+  value: true

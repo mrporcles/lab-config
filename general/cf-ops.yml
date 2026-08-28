@@ -7,14 +7,6 @@
   value: true
 
 - type: replace
-  path: /errand-config/push-usage-service/post-deploy-state
-  value: true
-
-- type: replace
-  path: /errand-config/push-apps-manager/post-deploy-state
-  value: true
-
-- type: replace
   path: /resource-config/compute/instances
   value: 2
 

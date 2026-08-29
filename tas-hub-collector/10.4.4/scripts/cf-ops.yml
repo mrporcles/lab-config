@@ -1,4 +1,16 @@
 - type: replace
+  path: /product-properties/.cloud_controller.max_disk_quota_app/value
+  value: 6144
+
+- type: replace
+  path: /product-properties/.properties.cf_networking_enable_space_developer_self_service/value
+  value: true
+
+- type: replace
+  path: /resource-config/compute/instances
+  value: 2
+
+- type: replace
   path: /errand-config/push-usage-service/post-deploy-state
   value: true
 
@@ -9,4 +21,3 @@
 - type: replace
   path: /errand-config/smoke_tests/post-deploy-state
   value: true
-

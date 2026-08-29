@@ -185,14 +185,6 @@ om staged-config -p cf > cf-original.yml || true
 # Add logging config to lab ERT ops file
 cat $CONFIG_DIR/${PRODUCT_SLUG}/${PRODUCT_VERSION}/scripts/cf-ops.yml >> $CONFIG_DIR/general/cf-ops.yml
 
-# Configure ERT with logging config
-om configure-product --config cf-original.yml --ops-file $CONFIG_DIR/general/cf-ops.yml \
-  --var opsman_root_ca="${opsman_root_ca}" \
-  --var otel_agent_cert="${otel_agent_cert}" \
-  --var otel_agent_key="${otel_agent_key}" \
-  --var log_store_cert="${log_store_cert}" \
-  --var log_store_key="${log_store_key}"
-
 # Apply changes
 retry om apply-changes -n cf -n hub-tas-collector
 

@@ -11,6 +11,7 @@ export TPST_CLIENT_SECRET=$(base64 < /dev/urandom | tr -Cd 'a-zA-Z0-9' | tr -d '
 source $CONFIG_DIR/${PRODUCT_SLUG}/${PRODUCT_VERSION}/scripts/lib/common.sh
 
 om() { command om -k "$@"; }
+bosh() { command bosh -k "$@"; }
 
 # Extract the AZ list from the director config and then construct
 # different formats of that information for use in interpolation
@@ -98,6 +99,8 @@ echo "Setting Hub admin user password to non expiring..."
 kubectl -n tanzusm exec postgresql-0 -c pg-container -- \
     psql -d uaa -c "update users set passwd_change_required = false where username = '${HUB_ADMIN_USER}'"
 
+# Make Tanzu Hub embeddable in a cross-site iframe (Educates workshops)
+HUB_FQDN="${HUB_HOSTNAME}" $CONFIG_DIR/${PRODUCT_SLUG}/${PRODUCT_VERSION}/scripts/lib/iframe-embed-overlays.sh
 
 # Set credentials required for the Tanzu Hub CLI
 export HUB_TARGET=${HUB_HOSTNAME}
@@ -168,7 +171,7 @@ om configure-product \
     --var cert_bundle="${cert_bundle}"
 
 # Apply changes
-retry om apply-changes
+retry om apply-changes -n hub-tas-collector
 
 # Parse the certs required for ERT log collection config
 opsman_root_ca=$(om certificate-authorities --format json | jq -r '.[0].cert_pem')
@@ -177,14 +180,11 @@ otel_agent_key=$(om credentials --product-name hub-tas-collector --credential-re
 log_store_cert=$(om credentials --product-name hub-tas-collector --credential-reference .logs-store.logs_store_mtls --credential-field cert_pem)
 log_store_key=$(om credentials --product-name hub-tas-collector --credential-reference .logs-store.logs_store_mtls --credential-field private_key_pem)
 
-# Generate the original config for the ERT tile
+# Generate the staged config for the ERT tile
 om staged-config -p cf > cf-original.yml || true
 
-# Add logging config to lab ERT ops file
-cat $CONFIG_DIR/${PRODUCT_SLUG}/${PRODUCT_VERSION}/scripts/cf-logging.yml >> $CONFIG_DIR/general/cf-ops.yml
-
 # Configure ERT with logging config
-om configure-product --config cf-original.yml --ops-file $CONFIG_DIR/general/cf-ops.yml \
+om configure-product --config cf-original.yml --ops-file $CONFIG_DIR/${PRODUCT_SLUG}/${PRODUCT_VERSION}/scripts/cf-ops.yml \
   --var opsman_root_ca="${opsman_root_ca}" \
   --var otel_agent_cert="${otel_agent_cert}" \
   --var otel_agent_key="${otel_agent_key}" \
@@ -192,12 +192,6 @@ om configure-product --config cf-original.yml --ops-file $CONFIG_DIR/general/cf-
   --var log_store_key="${log_store_key}"
 
 # Apply changes
-retry om apply-changes
+retry om apply-changes -n cf
 
 echo "Script completed successfully!" >&2
-
-
-
-
-
-

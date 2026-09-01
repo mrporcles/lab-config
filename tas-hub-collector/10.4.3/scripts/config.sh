@@ -11,7 +11,6 @@ export TPST_CLIENT_SECRET=$(base64 < /dev/urandom | tr -Cd 'a-zA-Z0-9' | tr -d '
 source $CONFIG_DIR/${PRODUCT_SLUG}/${PRODUCT_VERSION}/scripts/lib/common.sh
 
 om() { command om -k "$@"; }
-bosh() { command bosh -k "$@"; }
 
 # Extract the AZ list from the director config and then construct
 # different formats of that information for use in interpolation

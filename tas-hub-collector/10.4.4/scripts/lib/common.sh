@@ -18,7 +18,7 @@ retry() {
     - "$@" && return
     status=$?
     echo "command failed, retrying in 5 mins" 1>&2
-    sleep 60
+    sleep 300
     (( tries-- ))
   done
   echo "error exit: $status" 1>&2

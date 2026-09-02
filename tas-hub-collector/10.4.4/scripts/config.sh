@@ -179,14 +179,16 @@ otel_agent_key=$(om credentials --product-name hub-tas-collector --credential-re
 log_store_cert=$(om credentials --product-name hub-tas-collector --credential-reference .logs-store.logs_store_mtls --credential-field cert_pem)
 log_store_key=$(om credentials --product-name hub-tas-collector --credential-reference .logs-store.logs_store_mtls --credential-field private_key_pem)
 
-# Generate the original config for the ERT tile
+# Generate the staged config for the ERT tile
 om staged-config -p cf > cf-original.yml || true
 
-# Add logging config to lab ERT ops file
-cat $CONFIG_DIR/${PRODUCT_SLUG}/${PRODUCT_VERSION}/scripts/cf-ops.yml >> $CONFIG_DIR/general/cf-ops.yml
-
 # Configure ERT with logging config
-om configure-product --config cf-original.yml --ops-file $CONFIG_DIR/${PRODUCT_SLUG}/${PRODUCT_VERSION}/scripts/cf-ops.yml
+om configure-product --config cf-original.yml --ops-file $CONFIG_DIR/${PRODUCT_SLUG}/${PRODUCT_VERSION}/scripts/cf-ops.yml \
+  --var opsman_root_ca="${opsman_root_ca}" \
+  --var otel_agent_cert="${otel_agent_cert}" \
+  --var otel_agent_key="${otel_agent_key}" \
+  --var log_store_cert="${log_store_cert}" \
+  --var log_store_key="${log_store_key}"
 
 # Apply changes
 retry om apply-changes -n cf

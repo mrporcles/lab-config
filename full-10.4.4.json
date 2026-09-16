@@ -5,7 +5,8 @@
     "version": "10.4.2",
     "ops_files": ["postgres-ops.yml"],
     "certs": "false",
-    "terraform": "false"
+    "terraform": "false",
+    "nat_vm_tags": ["postgres-on-demand-broker"]
   },
   {
     "name": "genai",
@@ -13,7 +14,8 @@
     "version": "10.4.4",
     "ops_files": ["genai-ops.yml"],
     "certs": "false",
-    "terraform": "false"
+    "terraform": "false",
+    "nat_vm_tags": ["genai-models"]
   },
   {
     "name": "hub",

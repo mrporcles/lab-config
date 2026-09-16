@@ -35,3 +35,7 @@
   path: /product-properties/.properties.settings_shareable_instances?
   value:
     value: "Yes"
+
+- type: replace
+  path: /resource-config/postgres-on-demand-broker/internet_connected?
+  value: false

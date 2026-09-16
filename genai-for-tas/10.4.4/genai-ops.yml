@@ -1,10 +1,4 @@
 - type: replace
-  path: /product-properties/.errands.vm_extensions?
-  value:
-    value:
-      - public_ip
-
-- type: replace
   path: /product-properties/.properties.database_source.service_broker.name?
   value: 
     value: postgres
@@ -105,3 +99,11 @@
         model_handles: nomic-embed-text
         binding_credential_format: multi-model
         description: A high-performing open embedding model
+
+- type: replace
+  path: /resource-config/controller/internet_connected?
+  value: false
+
+- type: replace
+  path: /resource-config/errands/internet_connected?
+  value: false
